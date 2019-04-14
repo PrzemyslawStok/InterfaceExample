@@ -43,10 +43,20 @@ class Square extends Rectangle{
         void rightCornerClicked(int id);
     }
 
+    @FunctionalInterface
+    public interface squareLambda{
+        void clicked(int i,int j);
+    }
+
     squareInteraction mListener;
+    squareLambda mListenerLambda;
 
     public void setSquareInteractionListener(squareInteraction listener){
         mListener = listener;
+    }
+
+    public void setLambdaListener(squareLambda listener){
+        mListenerLambda = listener;
     }
 
 
@@ -58,6 +68,9 @@ class Square extends Rectangle{
         setHeight(dimension);
 
         this.setOnMouseClicked(event->{
+            if(mListenerLambda != null)
+                mListenerLambda.clicked(10,40);
+
             if (mListener == null)
                 return;
 
@@ -98,6 +111,10 @@ public class Main extends Application{
 
                 circle1.switchState();
             }
+        });
+
+        square.setLambdaListener((int i,int j)->{
+            System.out.print("["+i+" ,"+j+"]");
         });
 
 
